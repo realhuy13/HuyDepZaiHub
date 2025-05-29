@@ -4677,12 +4677,10 @@ function sections:configloader(props)
 	return configloader 
 end
 
-local window = library:new({textsize = 13.5,font = Enum.Font.RobotoMono,name = "Tuấn Anh IOS | discord.gg/AkDgH65MUF",color = Color3.fromRGB(255,255,255)})
+local window = library:new({textsize = 13.5,font = Enum.Font.RobotoMono,name = "HuyDepZai Hub | By real_quchuy",color = Color3.fromRGB(255,255,255)})
 
 local Tab1 = window:page({name = "Script"})
 local Tab2 = window:page({name = "Thông tin"})
-local Tab3 = window:page({name = "Test"})
-local Tab4 = window:page({name = "Test"})
 
 local Section1 = Tab1:section({name = "Script", side = "left"})
 
@@ -4700,6 +4698,22 @@ Section1:button({
     end
 })
 
+Section1:button({
+    name = "Xeter v2",
+    callback = function()
+        getgenv().Version = "V2"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Loader/main/Xeter.lua"))()
+    end
+})
+
+Section1:button({
+    name = "Xeter v2",
+    callback = function()
+        getgenv().Version = "V1"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Loader/main/Xeter.lua"))()
+    end
+})
+
 local Section1 = Tab1:section({name = "Hop", side = "right"})
 
 Section1:button({
@@ -4713,5 +4727,21 @@ Section1:button({
     name = "Full mon",
     callback = function()
         
+    end
+})
+
+local Section2 = Tab2:section({name = "Info", side = "left"})
+
+Section2:button({
+    name = "Tiktok",
+    callback = function()
+        https://www.tiktok.com/@quchuyy00
+    end
+})
+
+Section2:button({
+    name = "Facebook",
+    callback = function()
+        https://www.facebook.com/ngquoc.huy.162720/
     end
 })
