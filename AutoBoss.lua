@@ -29,18 +29,30 @@ local ToggleAutoChest = Home.Toggle({
 	Enabled = _G.Play
 })
 
--- Auto Farm Boss Trùm - Game Cộng Đồng Việt Nam
--- Script by Quốc Huy Hub
+-- CDVN Auto Farm Boss Script (Cầm kiếm + đánh boss)
+-- Quốc Huy Hub
 
-local BossName = "Boss Trùm" -- đúng tên boss
-local AttackDistance = 40 -- khoảng cách đứng khi tấn công
+local BossName = "BOSS" -- đúng tên boss trong hình
+local AttackDistance = 40 -- khoảng cách an toàn
+local ToolSlot = 1 -- kiếm ở slot 1
 
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
 
--- Tìm Boss Trùm
-function FindBossTrum()
+-- Trang bị kiếm từ slot
+function EquipTool()
+    local Backpack = LocalPlayer:FindFirstChild("Backpack")
+    if Backpack then
+        local tool = Backpack:FindFirstChildOfClass("Tool")
+        if tool then
+            tool.Parent = LocalPlayer.Character
+        end
+    end
+end
+
+-- Tìm boss theo tên
+function FindBoss()
     for _, obj in pairs(workspace:GetDescendants()) do
         if obj:IsA("Model") and obj:FindFirstChild("HumanoidRootPart") and string.find(obj.Name, BossName) then
             return obj
@@ -49,16 +61,16 @@ function FindBossTrum()
     return nil
 end
 
--- Teleport đến gần Boss
-function TeleportNear(boss)
+-- Teleport đến gần boss
+function TeleportNearBoss(boss)
     local char = LocalPlayer.Character
-    if char and char:FindFirstChild("HumanoidRootPart") and boss and boss:FindFirstChild("HumanoidRootPart") then
-        local targetPos = boss.HumanoidRootPart.Position + Vector3.new(0, AttackDistance, 0)
-        char.HumanoidRootPart.CFrame = CFrame.new(targetPos)
+    if char and char:FindFirstChild("HumanoidRootPart") and boss:FindFirstChild("HumanoidRootPart") then
+        local offset = Vector3.new(0, AttackDistance, 0)
+        char.HumanoidRootPart.CFrame = CFrame.new(boss.HumanoidRootPart.Position + offset)
     end
 end
 
--- Gõ boss
+-- Đánh boss bằng kiếm
 function AttackBoss()
     local tool = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Tool")
     if tool then
@@ -66,11 +78,14 @@ function AttackBoss()
     end
 end
 
--- Luôn tìm và đánh Boss Trùm
+-- Vòng lặp chính
 RunService.RenderStepped:Connect(function()
-    local boss = FindBossTrum()
-    if boss and boss:FindFirstChild("Humanoid") and boss.Humanoid.Health > 0 then
-        TeleportNear(boss)
-        AttackBoss()
-    end
+    pcall(function()
+        EquipTool()
+        local boss = FindBoss()
+        if boss and boss:FindFirstChild("Humanoid") and boss.Humanoid.Health > 0 then
+            TeleportNearBoss(boss)
+            AttackBoss()
+        end
+    end)
 end)
